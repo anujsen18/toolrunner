@@ -30,30 +30,7 @@
 
 <body>
 
-   <!-- HEADER SECTION-->
-    <div class="navbar navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="fa fa-bars mobile-bars" style=""></span>
-                </button>
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/logo.png" alt="" /> <!-- logo here-->
-                </a>
-            </div>
-            <div class="navbar-collapse collapse" data-scrollreveal="enter from the right 50px">
-                <ul class="nav navbar-nav">
-                    <li class=""><a href="#Homepage">Home</a></li><!-- menu links-->
-                    <li><a href="#section-about">About</a></li>  
-                    <li><a href="#section-works">Our Works</a></li>
-                    <li><a href="#section-services">Services</a></li>
-                    <li><a href="#section-contact">Contact</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-
+   <%@ include file="header.jsp" %>
 
 
 
@@ -76,7 +53,7 @@
                             <div class="hi-icon-effect-9 hi-icon-effect-9a">
 
 							<form:form method="get" action="hello.html">
-								<h2 class="main-text">${msg}</h2>
+								<h2 class="main-text">${jobs}</h2>
 								
 								<br>
 								

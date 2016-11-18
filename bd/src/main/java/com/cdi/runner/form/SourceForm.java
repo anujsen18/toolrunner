@@ -1,34 +1,118 @@
 package com.cdi.runner.form;
 
-public class SourceForm {
+import com.cdi.runner.util.ParsableKeyVal;
 
+public class SourceForm {
+	
+	
+	
+    @ParsableKeyVal(srcName="ingestion")
 	private String  sourcename;
-/*	private String validate_header_footer_flag;
-	private String quarantine_flag;
-	private String encoding_flag;
-	private String archive_flag;
-	private String file_name_pattern;
-	private String original_file_encoding;
-	private String quarantine_file_system;
-	private String output_compression;
-	private String output_file_type;
-	private String output_compression_type;
-	private String LOG_LEVEL;
-	private String error_log_retention_days;
-	private String info_log_retention_days;
-	private String audit_log_retention_days;
-	private String max_files_limit_to_combine;
-	private String min_files_limit_to_combine;
-	private String min_total_file_size;*/
+    @ParsableKeyVal(srcName="ingestion")
+	private String  SRC;
+    public String getSRC() {
+		return SRC;
+	}
+
+	public void setSRC(String sRC) {
+		SRC = sRC;
+	}
+	@ParsableKeyVal(srcName="ingestion")
+	private String validate_header_footer_flag;
+    @ParsableKeyVal(srcName="ingestion")
+    private String quarantine_flag;
+    @ParsableKeyVal(srcName="ingestion")
+	private String encoding_flag; 
+    @ParsableKeyVal(srcName="ingestion")
+	private String archive_flag; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String file_name_pattern; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String original_file_encoding; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String quarantine_file_system; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String output_compression; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String output_file_type; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String output_compression_type; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String LOG_LEVEL; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String error_log_retention_days; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String info_log_retention_days; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String audit_log_retention_days; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String max_files_limit_to_combine; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String min_files_limit_to_combine; 
+	@ParsableKeyVal(srcName="ingestion")
+	private String min_total_file_size; 
+
+	//default attribute for ingestion 
+	@ParsableKeyVal(srcName="ingestion")
+	private String input_path="/ingestion/${ENV}/data/${SRC}/in";
+	@ParsableKeyVal(srcName="ingestion")
+	private String	output_path="/ingestion/${ENV}/data/${SRC}/out";
+	@ParsableKeyVal(srcName="ingestion")
+	private String temporary_path="/ingestion/${ENV}/data/${SRC}/tmp";
+	@ParsableKeyVal(srcName="ingestion")
+	private String failed_path="/ingestion/${ENV}/data/${SRC}/failed";
+
+			
+	//default attribute for ingestion 
+	@ParsableKeyVal(srcName="ingestion")
+	private String   quarantine_path="${HADOOP_BASE_DIR}/${ENV}/stage/${SRC}/quarantine";
+	@ParsableKeyVal(srcName="ingestion")
+	private String		hdfs_dest="${HADOOP_BASE_DIR}/${ENV}/stage/${SRC}/calldata";
+	@ParsableKeyVal(srcName="ingestion")
+	private String audit_hdfs_path="${HADOOP_BASE_DIR}/${ENV}/stage/ingestion_audit";
+	@ParsableKeyVal(srcName="ingestion")
+	private String archive_hdfs_path="${HADOOP_BASE_DIR}/${ENV}/archive/${SRC}";
+	
+	@ParsableKeyVal(srcName="headerfooter")
+	private String file_header;
+	@ParsableKeyVal(srcName="headerfooter")
+	private String file_footer;
+	
+	@ParsableKeyVal(srcName="hiveloader")
+	private String stage_script; 
 	
 	
+	public String getFile_header() {
+		return file_header;
+	}
+
+	public void setFile_header(String file_header) {
+		this.file_header = file_header;
+	}
+
+	public String getFile_footer() {
+		return file_footer;
+	}
+
+	public void setFile_footer(String file_footer) {
+		this.file_footer = file_footer;
+	}
+
+	public void setStage_script(String stage_script) {
+		this.stage_script = stage_script;
+	}
+	
+	public String getStage_script() {
+		return stage_script;
+	}
 	public String getSourcename() {
 		return sourcename;
 	}
 	public void setSourcename(String sourcename) {
 		this.sourcename = sourcename;
+		this.setSRC(sourcename);
 	}
-	/*public String getValidate_header_footer_flag() {
+	public String getValidate_header_footer_flag() {
 		return validate_header_footer_flag;
 	}
 	public void setValidate_header_footer_flag(String validate_header_footer_flag) {
@@ -131,5 +215,5 @@ public class SourceForm {
 		this.min_total_file_size = min_total_file_size;
 	}
 
-	*/
+	
 }

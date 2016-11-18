@@ -1,10 +1,13 @@
 package com.cdi.runner;
 
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.util.Properties;
 
 import com.cdi.runner.form.JobForm;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
+import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
@@ -42,53 +45,89 @@ public class JobExecutor {
 	}
 	
 	
+	public  String commandexecutor(String command){
+		  Session session = this.createConnection();
+		  String command1=command;
+		  StringBuilder sb = new StringBuilder();
+		   
+			if (session != null) {
+				Channel channel;
+				try {
+					channel = session.openChannel("exec");
+					((ChannelExec) channel).setCommand(command1);
+					channel.setInputStream(null);
+					((ChannelExec) channel).setErrStream(System.err);
+
+					InputStream in = channel.getInputStream();
+					channel.connect();
+					byte[] tmp = new byte[1024];
+					while (true) {
+						while (in.available() > 0) {
+							int i = in.read(tmp, 0, 1024);
+							if (i < 0)
+								break;
+							sb.append(new String(tmp, 0, i));
+							System.out.print(new String(tmp, 0, i));
+						}
+						if (channel.isClosed()) {
+							System.out.println("exit-status: " + channel.getExitStatus());
+							break;
+						}
+						try {
+							Thread.sleep(1000);
+						} catch (Exception ee) {
+						}
+					}
+					channel.disconnect();
+					session.disconnect();
+					System.out.println("DONE");
+				} catch (Exception e) {
+					System.out.println("error in executing");
+					e.printStackTrace();
+				}
+
+			}
+			System.out.println(sb.toString());
+			return sb.toString();
+	}
+	
+	
 	
 	public  String  executeJob(JobForm jf){
 	   Session session = this.createConnection();
-	   System.out.println("cd /ingestion/prod/apps/bulk_ingestion;bash /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e="+jf.getEnv()+" -s=cdr_source -t=ingestion");
+	   //System.out.println("cd /ingestion/prod/apps/bulk_ingestion;bash /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e="+jf.getEnv()+" -s=cdr_source -t=ingestion");
 	   String command1="cd /ingestion/prod/apps/bulk_ingestion;bash /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e="+jf.getEnv()+" -s=cdr_source -t=ingestion"; 
-	   StringBuilder sb = new StringBuilder();
-	   
-		if (session != null) {
-			Channel channel;
-			try {
-				channel = session.openChannel("exec");
-				((ChannelExec) channel).setCommand(command1);
-				channel.setInputStream(null);
-				((ChannelExec) channel).setErrStream(System.err);
-
-				InputStream in = channel.getInputStream();
-				channel.connect();
-				byte[] tmp = new byte[1024];
-				while (true) {
-					while (in.available() > 0) {
-						int i = in.read(tmp, 0, 1024);
-						if (i < 0)
-							break;
-						sb.append(new String(tmp, 0, i));
-						System.out.print(new String(tmp, 0, i));
-					}
-					if (channel.isClosed()) {
-						System.out.println("exit-status: " + channel.getExitStatus());
-						break;
-					}
-					try {
-						Thread.sleep(1000);
-					} catch (Exception ee) {
-					}
-				}
-				channel.disconnect();
-				session.disconnect();
-				System.out.println("DONE");
-			} catch (Exception e) {
-				System.out.println("error in executing");
-				e.printStackTrace();
-			}
-
-		}
-		System.out.println(sb.toString());
-		return sb.toString();
+	 return commandexecutor(command1);
 	}
+	
+	
+	 public void WriteFileServer(String str_Content, String str_FileDirectory, String str_FileName)
+	  {
+		 try
+		 {
+		   Session  obj_Session = this.createConnection();
+		   Properties obj_Properties = new Properties();
+		   obj_Properties.put("StrictHostKeyChecking", "no");
+		   obj_Session.setConfig(obj_Properties);
+
+		   Channel obj_Channel = obj_Session.openChannel("sftp");
+		   obj_Channel.connect();
+		   ChannelSftp obj_SFTPChannel = (ChannelSftp) obj_Channel;
+		   obj_SFTPChannel.cd(str_FileDirectory);
+		   InputStream obj_InputStream = new ByteArrayInputStream(str_Content.getBytes());
+		   obj_SFTPChannel.put(obj_InputStream, str_FileDirectory + str_FileName );
+		   obj_SFTPChannel.exit();
+		   obj_InputStream.close();
+		   obj_Channel.disconnect();
+		   obj_Session.disconnect();
+		 }
+		 catch (Exception ex)
+		 {System.out.println("exception in writing");
+		   ex.printStackTrace();
+		 } 
+	  }	
+	
+	
 	public static void main() {
 	    String host="10.223.3.143";
 	    String user="cts1";
@@ -132,6 +171,13 @@ public class JobExecutor {
 	    	e.printStackTrace();
 	    }
 
+	}
+
+
+
+	public void createDirforsource(String source) {
+		commandexecutor("mkdir -p "+ source);
+		System.out.println("creating dir  "+ "mkdir -p "+ source);
 	}
 
 }

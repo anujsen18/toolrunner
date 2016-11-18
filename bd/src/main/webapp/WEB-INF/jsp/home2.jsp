@@ -10,7 +10,7 @@
       <!-- HEAD SECTION-->
 <head>
     <meta charset="utf-8">
-    <title>AIM Big Data Runner</title>
+    <title>Bootstrap Multipurpose Template - Tridenta</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">   
      <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -67,21 +67,21 @@
     	}
      </script>
 <body>
-<%@ include file="header.jsp" %>
+
      <!-- HEADER SECTION-->
-    <!-- <div class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="fa fa-bars mobile-bars" style=""></span>
                 </button>
                 <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/logo.png" alt="" /> logo here
+                    <img src="assets/img/logo.png" alt="" /> <!-- logo here-->
                 </a>
             </div>
             <div class="navbar-collapse collapse" data-scrollreveal="enter from the right 50px">
                 <ul class="nav navbar-nav">
-                    <li class=""><a href="#Homepage">Home</a></li>menu links
+                    <li class=""><a href="#Homepage">Home</a></li><!-- menu links-->
                     <li><a href="#section-about">About</a></li>  
                     <li><a href="#section-works">Our Works</a></li>
                     <li><a href="#section-services">Services</a></li>
@@ -90,7 +90,7 @@
             </div>
 
         </div>
-    </div> -->
+    </div>
      <!-- END HEADER SECTION-->
 
     <!--PAGE CONTENT--> 
@@ -177,7 +177,6 @@
                                 <select id="source" name="source" class="form-control">
 											<option value="none">select a value</option>
 											<option value="cdr_source">CDR</option>
-										    <option value="vdr_source">VDR</option>
 											<option value="CALLRECORDS">CALLRECORDS</option>
 								</select>
                                 
@@ -188,14 +187,10 @@
 											<option value="none">select a value</option>
 											<option value="dev">DEV</option>
 											<option value="prod">PROD</option>
-											<option value="test">TEST</option>
 									</select>
                                
                             </div>
                             <div class="col-md-12 form-group">
-                           
-                            
-                            
                                 <label for="Operation">Operation</label>
                                 <select id="operation" name="operation" class="form-control">
 											<option value="none">select a value</option>
@@ -269,95 +264,22 @@
     <section>
         <div class="container">
             <div class="row" data-scrollreveal="enter right and move 40px, over 0.8s">
-             <img src="assets/img/intro/arch.png" style="border:1px solid #37AFFF ;margin-top: 20px;"  >
-                <div class="col-md-16">
-                
+                <div class="col-md-8">
                     <div  id="contact-form" ><%-- commandName="sourceForm" --%>  
-                    
-     <form:form method="get" action="getAttributePage" commandName="jobType">
-       
-     
-       <label for="name"  style=" margin-bottom: 30px; color:#3276b1">Select operations for configure the source </label> 
-	   <div class="col-md-16 form-group">
-	       <div class="col-md-3 form-group">
-	         <label for="fileIngestion">1. </label>
-  		    <input type="checkbox" name="fileIngestion" class="togel" id="fileIngestion" value="false" > 
- 		    <label for="INGESTION">INGESTION</label>
- 		    </div>
-			
-			
-			<div class="col-md-3 form-group">
-			    <label for="importfromDatabase">2. </label>
-  		    <input type="checkbox" name="importfromDatabase" id="importfromDatabase" value="false"  > 
-			  <label for="importfromDatabase">DB Import</label>
-			</div>
-			
-			
-			 <div class="col-md-3 form-group">
-			    <label for="rawAreaArchival">3. </label>
-  		    <input type="checkbox" name="rawAreaArchival" id="rawAreaArchival" value="false"  > 
-			  <label for="rawAreaArchival">ARCHIVAL</label>
-			</div>
-			
-			  <div class="col-md-3 form-group">
- 		      <label for="bulkfileProcessing">4. </label>
- 		    <input type="checkbox" name="bulkfileProcessing" class="togel"  id="bulkfileProcessing" value="false"  >
- 		     <label for=" bulkfileProcessing"> Bulk file Processing</label>
- 		     </div>
-			
-			
+     <form:form method="post" action="savesource" commandName="sourceForm">
+	 <div class="col-md-12 form-group">
+  		    <input type="checkbox" name="ingestion" class="togel" id="ingestion" value="ingestion" > INGESTION
+ 		    <input type="checkbox" name="hiveloader" class="togel"  id="hiveloader" value="hiveloader" > HIVELOADER
+ 		    <input type="checkbox" name="compaction"  id="compaction"  value="compaction" > COMPACTION
+  			<input type="checkbox" name="import" id="import" value="import"> IMPORT
+  		    <input type="checkbox" name="archival" id="archival" value="archival" > ARCHIVAL
 
-			<div class="col-md-3 form-group">
-			    <label for="hDFSRetention">5. </label>
-  		    <input type="checkbox" name="hDFSRetention" id="hDFSRetention" value="false"  > 
-			  <label for="hDFSRetention">HDFS Retention</label>
-			</div>
-			
-			
-			 <div class="col-md-3 form-group">
- 		     <label for="hIVECompaction">6. </label>
- 		    <input type="checkbox" name="hIVECompaction"  id="hIVECompaction"  value="false"  > 
-  			  <label for="hIVECompaction">HIVE Compaction</label>
-  			 </div>
-			
-			
-			<div class="col-md-3 form-group">
- 		        <label for="exportToFtpServer">7. </label>
-  			<input type="checkbox" name="exportToFtpServer" id="exportToFtpServer" value="false"  > 
-  		     <label for="exportToFtpServer">Export To FtpServer</label>
-  		    </div>
-			
-			<div class="col-md-3 form-group">
- 		        <label for="exportToDatabase">8. </label>
-  			<input type="checkbox" name="exportToDatabase" id="exportToDatabase" value="false"  > 
-  		     <label for="exportToDatabase">Export To Database</label>
-  		    </div>
-			
-			 <div class="col-md-3 form-group">
- 		        <label for="dataDeDuplication">9. </label>
-  		    <input type="checkbox" name="dataDeDuplication" id="dataDeDuplication" value="false"  > 
-			  <label for="dataDeDuplication">Data De Duplication</label>
-			</div>
-			
-			<div class="col-md-3 form-group">
-			    <label for="automatedDeployment">10. </label>
-  		    <input type="checkbox" name="automatedDeployment" id="automatedDeployment" value="false"  > 
-			  <label for="automatedDeployment">Automated Deployment</label>
-			</div>
-			
 </div>
 
- <div class="col-md-12 form-group">
-		                                <label for="name">Source Name</label>
-		                       
-		                                <input type="text" name="sourcename" class="col-md-4 form-control" id="sourcename" placeholder="Source Name" defalt="" />
-		                        
-		                         
-      </div>
 
-		<%--	<fieldset class="col-md-12 form-group" id="ingestionform">
- 	 <legend>ingestion  Details::</legend>
-		                      <form:form method="post" action="somepage" commandName="somedata"  >
+		<fieldset class="col-md-12 form-group" id="ingestionform">
+		 <legend>ingestion  Details::</legend>
+		                     <%--  <form:form method="post" action="somepage" commandName="somedata"  > --%>
 		                       <div class="col-md-12 form-group">
 		                                <label for="name">Source Name</label>
 		                       
@@ -531,12 +453,12 @@
 		
 								<button type="reset" style="height: 40px; margin-bottom: 50px;" class="col-md-offset-4 col-md-4 btn btn-primary">Clear</button>
 		                        
-								</form:form>
+								<%-- </form:form> --%>
 		</fieldset>			
 						
 		<fieldset class="col-md-12 form-group" id="hiveloaderform" >
  			<legend>hive loader  Details:</legend>
-					<form:form method="post" name="" action="somepage" commandName="somedata"  >
+				<%-- 	<form:form method="post" name="" action="somepage" commandName="somedata"  > --%>
                     
 						<div class="col-md-6 form-group">
 							<label for="Stage loder script">Stage loder script</label> <input type="text"
@@ -555,9 +477,9 @@
 
 					<button type="reset" style="height: 40px; margin-bottom: 50px;" class="col-md-offset-4 col-md-4 btn btn-primary">Clear</button>
                      
-               </fieldset>     --%>     
+               </fieldset>         
                
-                <button type="submit" style="height: 40px; margin-bottom: 50px;" class="col-md-offset-2 col-md-2 btn btn-primary">Create configuration</button>
+                <button type="submit" style="height: 40px; margin-bottom: 50px;" class="col-md-offset-4 col-md-4 btn btn-primary">Submit</button>
                       
 						 </form:form> 
 					
@@ -570,7 +492,7 @@
                 <!-- ./span12 -->
             </div>
 
-      <!--   </div> -->
+        </div>
     </section>
     <!-- END CONTACT SECTION-->
     <!--END PAGE CONTENT-->
@@ -633,21 +555,16 @@
 			 $('#ingestionform').hide(); 
 			 $('#hiveloaderform').hide(); 	
 
-			 $("input[type='checkbox']").on("change",function(){
-				   if($(this).is(":checked"))
-				      $(this).val("true");
-				    else
-				      $(this).val("false");
-				});
-/* 		 
-	$('').click(function() {
+		
+		 
+	$('.togel').click(function() {
 			var formname = this.id;
 			var app = formname + "form";
 			if ($('#' + formname).is(":checked"))
 				$('#' + app).show();
 			else
 				$('#' + app).hide();
-		}); */
+		});
 	});
 </script> 
     <!--END  BODY SECTION-->
