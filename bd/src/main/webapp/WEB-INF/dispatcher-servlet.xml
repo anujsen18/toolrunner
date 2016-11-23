@@ -20,6 +20,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 	
+	
+	
+	
 	<mvc:resources mapping="/assets/**" location="/WEB-INF/assets/"/>
    <mvc:annotation-driven />
 </beans>

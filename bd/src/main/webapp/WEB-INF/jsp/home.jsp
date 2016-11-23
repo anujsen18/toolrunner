@@ -5,12 +5,14 @@
 <!--[if gt IE 8]><!-->
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <%@taglib  uri="http://www.springframework.org/tags" prefix="spring"%>
+ <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html class="no-js">
 <!--<![endif]-->
       <!-- HEAD SECTION-->
 <head>
     <meta charset="utf-8">
     <title>AIM Big Data Runner</title>
+   
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">   
      <!--[if lt IE 9]><script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
@@ -26,13 +28,7 @@
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   
 </head>
-<script type="text/javascript">
-	
-    </script> 
-<!-- END HEAD SECTION-->
 
-     <!-- BODY SECTION-->
-     
      <script type="text/javascript">
      
      function  executeFlow() {
@@ -65,36 +61,50 @@
     	return true;
     	}
     	}
+     
+     
+     function getClusterData(){ 
+     	var  cluster = $('#clusterconf').val();
+     	$("#source").empty();
+        $("#source").append($('<option>').text("select a value").val("none"));
+    	$("#env").empty();
+        $("#env").append($('<option>').text("select a value").val("none"));
+     	  var url="getCluster.html?cluster="+cluster;
+        
+      
+     	     $projectKey = $('#projectKey');
+
+     		 
+     		            $.ajax({
+     		                type: "GET",
+     		                url: "getCluster.html",
+     		                data: {"cluster": $('#clusterconf').val()},
+     		                dataType: 'json',
+     		                success: function(data){
+     		                	  var listvar = [ '#source','#env']       
+     		               $.each(data, function(index, value) {  
+     		            	 
+     		               var cuind=index
+     		                    $.each(value, function(index, val2) {
+     		                    	
+     		                    	 
+     		                       $(listvar[cuind]).append($('<option>').text(val2).val(val2));
+     		                 
+     		                  });  
+     		                    });
+     		                }
+     		            });
+     		       
+     		
+ }
+     
+   
+     
+   
      </script>
 <body>
 <%@ include file="header.jsp" %>
-     <!-- HEADER SECTION-->
-    <!-- <div class="navbar navbar-fixed-top" role="navigation">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="fa fa-bars mobile-bars" style=""></span>
-                </button>
-                <a class="navbar-brand" href="index.html" >
-                    <img src="assets/img/logo.png" alt="" /> logo here
-                </a>
-            </div>
-            <div class="navbar-collapse collapse" data-scrollreveal="enter from the right 50px">
-                <ul class="nav navbar-nav">
-                    <li class=""><a href="#Homepage">Home</a></li>menu links
-                    <li><a href="#section-about">About</a></li>  
-                    <li><a href="#section-works">Our Works</a></li>
-                    <li><a href="#section-services">Services</a></li>
-                    <li><a href="#section-contact">Contact</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div> -->
-     <!-- END HEADER SECTION-->
-
-    <!--PAGE CONTENT--> 
-    <!-- HOMEPAGE SECTION-->  
+    
 
     <section id="Homepage">
         <div class="container">
@@ -120,29 +130,14 @@
                                 <a href="#section-works" class="hi-icon  hi-icon-images"></a>
                             </div>
                             <br />
-                           <!--  <ul class="social-network social-circle">
-                                <li><a href="#" class="icoRss" title="Rss"><i class="fa fa-rss"></i></a></li>
-                                <li><a href="#" class="icoFacebook" title="Facebook"><i class="fa fa-facebook"></i></a></li>
-                                <li><a href="#" class="icoTwitter" title="Twitter"><i class="fa fa-twitter"></i></a></li>
-                                <li><a href="#" class="icoGoogle" title="Google +"><i class="fa fa-google-plus"></i></a></li>
-                                <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-                            </ul> -->
+                         
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-     <!--END HOMEPAGE SECTION-->
-    
-     <!-- ABOUT SECTION-->
   
-     <!-- END ABOUT SECTION-->
-     <!-- WORKS SECTION-->
-   
-
-    <!--END WORKS SECTION-->
-
     <!-- SERVICES SECTION-->
     <section id="section-services" class="section" >
         <div class="container" data-scrollreveal='after 0.30s'>
@@ -172,23 +167,43 @@
                     <div  id="contact-form" >
 
                        <form name="executorform" method="get" action="submitJob.html">
+                         
+                         <div id="fordata">
+                         
+                         </div>
+                       
+                           
+                         <div class="col-md-6 form-group">
+                                <label for="Source">Cluster</label>   
+                            <select name='clusterconf' id="clusterconf" class="form-control" onchange="getClusterData()">
+								<option >select a value</option>
+								<c:forEach items="${clusterlist}" var="clusterval">
+								 <option value="${clusterval}">${clusterval}</option>
+									
+								</c:forEach>
+							</select>
+                           
+                            </div> 
+                           
+                           
                             <div class="col-md-6 form-group">
                                 <label for="Source">Source</label>
                                 <select id="source" name="source" class="form-control">
 											<option value="none">select a value</option>
-											<option value="cdr_source">CDR</option>
+											<!-- <option value="cdr_source">CDR</option>
 										    <option value="vdr_source">VDR</option>
-											<option value="CALLRECORDS">CALLRECORDS</option>
+											<option value="CALLRECORDS">CALLRECORDS</option> -->
 								</select>
                                 
                             </div>
                             <div class="col-md-6 form-group">
                                <label for="Environment">Environment</label>
                                <select id="env" name="env" class="form-control">
-											<option value="none">select a value</option>
+										<option value="none">select a value</option>
+											<!-- <option value="none">select a value</option>
 											<option value="dev">DEV</option>
 											<option value="prod">PROD</option>
-											<option value="test">TEST</option>
+											<option value="test">TEST</option> -->
 									</select>
                                
                             </div>
@@ -275,9 +290,20 @@
                     <div  id="contact-form" ><%-- commandName="sourceForm" --%>  
                     
      <form:form method="get" action="getAttributePage" commandName="jobType">
-       
-     
-       <label for="name"  style=" margin-bottom: 30px; color:#3276b1">Select operations for configure the source </label> 
+
+							
+							
+							 <div class="col-md-16">
+						<label for="name"  style=" margin-bottom: 30px; color:#3276b1">Select Cluster for adding configuration </label> 	
+							 <select name='clusterconf' class="form-control">
+								<option id="" >select a value</option>
+								<c:forEach items="${clusterlist}" var="clusterval">
+								 <option value="${clusterval}">${clusterval}</option>
+									
+								</c:forEach>
+							</select> 
+							</div>
+ <label for="name"  style=" margin-bottom: 30px; color:#3276b1">Select operations for configure the source </label> 
 	   <div class="col-md-16 form-group">
 	       <div class="col-md-3 form-group">
 	         <label for="fileIngestion">1. </label>
@@ -289,7 +315,8 @@
 			<div class="col-md-3 form-group">
 			    <label for="importfromDatabase">2. </label>
   		    <input type="checkbox" name="importfromDatabase" id="importfromDatabase" value="false"  > 
-			  <label for="importfromDatabase">DB Import</label>
+			  <label for="importfromDatabase" >DB Import</label>
+			   
 			</div>
 			
 			
@@ -572,31 +599,7 @@
 
       <!--   </div> -->
     </section>
-    <!-- END CONTACT SECTION-->
-    <!--END PAGE CONTENT-->
-    <!-- FOOTER SECTION-->
-    <section id="footer" class="section footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <ul class="social-network social-circle">
-                        <li><a href="#" class="icoRss" title="Rss"><i class="fa fa-rss"></i></a></li>
-                        <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-6 align-center">
-                    <div class="col-sm-12">
-                        <p>Copyright &copy; www.cognizant.com</p>
-                        <p>2014 All Rights Reserved</p>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-    </section>
-     <!-- END FOOTER SECTION-->
+   <%@ include file="footer.jsp" %>
      <!-- SCROLLUP LINK SECTION-->
     <a href="#Homepage" class="scrollup"><i class="fa fa-chevron-up"></i></a>
      <!--END SCROLLUP LINK SECTION-->

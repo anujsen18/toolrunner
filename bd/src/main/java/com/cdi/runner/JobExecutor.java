@@ -1,10 +1,20 @@
 package com.cdi.runner;
 
+import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Properties;
 
 import com.cdi.runner.form.JobForm;
+import com.cdi.runner.service.JobExecutorService;
 import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
@@ -180,4 +190,41 @@ public class JobExecutor {
 		System.out.println("creating dir  "+ "mkdir -p "+ source);
 	}
 
+
+	public void WriteFileForMeta(String value, String dirpath) throws IOException {
+		File confFile = new File(dirpath);
+		BufferedWriter br = new BufferedWriter(new FileWriter(confFile));
+		try{
+		br.write(value);}
+		finally{
+		br.flush();
+		br.close();}
+	}
+
+	
+	public List<String> ReadForMeta() throws IOException {
+		File folder = new File(JobExecutorService.metadirpath);
+		File[] listOfFiles = folder.listFiles();
+		List<String> filename= new ArrayList<String>();
+		    for (int i = 0; i < listOfFiles.length; i++) {
+		      if (listOfFiles[i].isFile()) {
+		    	  filename.add(listOfFiles[i].getName().split(".properties")[0]);
+		        //System.out.println("File " + (listOfFiles[i].getName().split(".properties")[0]));
+		      }
+		    }
+	return filename;
+	}
+
+
+	public ArrayList<ArrayList<String>> getMatchedSourceforCluster(String cluster) throws FileNotFoundException, IOException {
+		File clusterFile = new File(JobExecutorService.metadirpath+cluster+".properties");
+		Properties prop=new Properties();
+		prop.load(new FileInputStream(clusterFile));
+	
+		ArrayList<ArrayList<String>> funalresult= new ArrayList<ArrayList<String>>();
+		
+		funalresult.add(  new ArrayList<String>(Arrays.asList(prop.getProperty("source", "").split("#")))); 
+		funalresult.add(  new ArrayList<String>(Arrays.asList(prop.getProperty("env", "").split(",")))); 
+		  return funalresult;
+	}
 }

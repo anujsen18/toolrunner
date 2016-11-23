@@ -1,11 +1,14 @@
 package com.cdi.runner.service;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cdi.runner.JobExecutor;
+import com.cdi.runner.form.ClusterForm;
 import com.cdi.runner.form.JobForm;
 import com.cdi.runner.form.ScheduledJobForm;
 import com.cdi.runner.form.SourceForm;
@@ -13,8 +16,8 @@ import com.cdi.runner.util.FeildValConverter;
 
 public class JobExecutorService {
 
-	String rootpath="/ingestion/test/apps/bulk_ingestion/conf/";
-	
+public	static String rootpath="/ingestion/test/apps/bulk_ingestion/conf/";
+public	static String metadirpath = "C:\\Users\\532051\\neoGit\\bd\\src\\main\\webapp\\WEB-INF\\assets\\meta\\";
 	// business method for saving the fields in to respected file 
 public void writeFileToServer(SourceForm sf) throws IllegalAccessException{
    JobExecutor jb=	new JobExecutor(); 
@@ -47,6 +50,7 @@ public List  getListOfSchedledJob() {
 	String str= jb.commandexecutor("echo Password123 | sudo -S  crontab -l | grep -v '#'");
 	//String[] strs=str.split("\n");
 	for(String strs : str.split("\n")){
+		//todo exception handling for ArrayIndexOutOfBoundsException incase of server not responding 
 		listscjf.add(new ScheduledJobForm(strs));
 	}
 	return listscjf;
@@ -92,4 +96,34 @@ public String executeJob(JobForm jf) {
 	  System.out.println(str);
 	return str;
 }
+
+
+public void writeFileToMetadir(ClusterForm clusterForm) throws IllegalAccessException, IOException {
+	  Map<String,String> strval=	FeildValConverter.getJobSpecKeyValMap(clusterForm, ClusterForm.class);
+	  for (Entry<String,String> str : strval.entrySet()) {
+	  JobExecutor jb=	new JobExecutor(); 
+	String fileName =clusterForm.getCluster_name()+"_conf.properties";
+	String dirpath = metadirpath+fileName;		
+		jb.WriteFileForMeta(str.getValue(),dirpath );
+			
+		}
+	 
+}
+
+
+public List<String> ReadForMeta() throws IOException {
+	 JobExecutor jb=	new JobExecutor(); 
+	List<String> filename= jb.ReadForMeta();
+	return filename;
+}
+
+
+public ArrayList<ArrayList<String>> getMatchedSourceforCluster(String cluster) throws FileNotFoundException, IOException {
+	     JobExecutor jb=	new JobExecutor(); 
+	     ArrayList<ArrayList<String>> filename= jb.getMatchedSourceforCluster(cluster);
+		return filename;
+	
+}
+
+
 }

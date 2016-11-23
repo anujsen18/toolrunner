@@ -55,13 +55,11 @@
                             
                             
                            <h2 class="main-text" >Configure </h2>   
-                        
-                           
-                           <h2 class="main-text" >V </h2>   
+                        	<h2 class="main-text" >V </h2>   
                            <h2 class="main-text">Schedule  </h2> 
-                            <h2 class="main-text" >V </h2>   
+                           <h2 class="main-text" >V </h2>   
                            <h2 class="main-text">Run  </h2>   
-                             <h2 class="main-text" >V </h2>   
+                           <h2 class="main-text" >V </h2>   
                            <h2 class="main-text">Monitor  </h2>   
                 
                       <!--       <h2 class="main-text">Configur
@@ -85,29 +83,7 @@
      <!--END HOMEPAGE SECTION-->
     
   
-    <!-- FOOTER SECTION-->
-    <section id="footer" class="section footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-6">
-                    <ul class="social-network social-circle">
-                        <li><a href="#" class="icoRss" title="Rss"><i class="fa fa-rss"></i></a></li>
-                        <li><a href="#" class="icoLinkedin" title="Linkedin"><i class="fa fa-linkedin"></i></a></li>
-                    </ul>
-                </div>
-                <div class="col-sm-6 align-center">
-                    <div class="col-sm-12">
-                        <p>Copyright &copy; www.cognizant.com</p>
-                        <p>2014 All Rights Reserved</p>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-
-    </section>
-     <!-- END FOOTER SECTION-->
+    <%@ include file="footer.jsp" %>
      <!-- SCROLLUP LINK SECTION-->
     <a href="#Homepage" class="scrollup"><i class="fa fa-chevron-up"></i></a>
      <!--END SCROLLUP LINK SECTION-->
