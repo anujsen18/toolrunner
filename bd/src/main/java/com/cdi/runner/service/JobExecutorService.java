@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.cdi.runner.JobExecutor;
+import com.cdi.runner.bean.CronJobs;
 import com.cdi.runner.form.ClusterForm;
 import com.cdi.runner.form.JobForm;
 import com.cdi.runner.form.ScheduledJobForm;
@@ -123,6 +124,37 @@ public ArrayList<ArrayList<String>> getMatchedSourceforCluster(String cluster) t
 	     ArrayList<ArrayList<String>> filename= jb.getMatchedSourceforCluster(cluster);
 		return filename;
 	
+}
+
+
+public String scheduleJoboncluster(CronJobs cronjb) {
+	String strJobcommand= createJobCommand(cronjb);
+	return null;
+}
+
+
+private String createJobCommand(CronJobs cronjb) {
+	//echo Password123 | sudo -S  crontab -l | { cat; echo "3 * * * * /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e=prod -s=cdr_source -t=help"; } |   sudo  crontab -
+
+	String sudopwd = "Password123" ;
+	//todo properties file 
+	String strDirforJobType= "/ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh" ;
+    String schduleEntry= getEntry(cronjb);
+	StringBuffer sb = new StringBuffer();
+	sb.append("echo ").append(sudopwd).append(" | sudo -S crontab -l | {cat; echo ");
+	
+	return null;
+}
+
+
+private String getEntry(CronJobs cronjb) {
+	String str="";
+	System.out.println(cronjb.getDay());
+	System.out.println(cronjb.getMinute());
+	System.out.println(cronjb.getMonth());
+	System.out.println(cronjb.getDow());
+	System.out.println(cronjb.getHour());
+	return null;
 }
 
 

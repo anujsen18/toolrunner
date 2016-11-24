@@ -1,40 +1,42 @@
 package com.cdi.runner.bean;
 
-public class CronJobs {
+import com.cdi.runner.form.JobForm;
+
+public class CronJobs extends JobForm {
 	
-	private int minute;
-	private int hour;
-	private int day;
-	private int month;
-	private int dow;
-	public int getMinute() {
+	private String minute;
+	private String hour;
+	private String day;
+	private String month;
+	private String dow;
+	public String getMinute() {
 		return minute;
 	}
-	public void setMinute(int minute) {
+	public void setMinute(String minute) {
 		this.minute = minute;
 	}
-	public int getHour() {
+	public String getHour() {
 		return hour;
 	}
-	public void setHour(int hour) {
+	public void setHour(String hour) {
 		this.hour = hour;
 	}
-	public int getDay() {
+	public String getDay() {
 		return day;
 	}
-	public void setDay(int day) {
+	public void setDay(String day) {
 		this.day = day;
 	}
-	public int getMonth() {
+	public String getMonth() {
 		return month;
 	}
-	public void setMonth(int month) {
+	public void setMonth(String month) {
 		this.month = month;
 	}
-	public int getDow() {
+	public String getDow() {
 		return dow;
 	}
-	public void setDow(int dow) {
+	public void setDow(String dow) {
 		this.dow = dow;
 	}
 	

@@ -36,13 +36,9 @@ public class SourceDisplayController {
 	@RequestMapping(value= "/displayjobs", method = RequestMethod.POST)
 	public ModelAndView runCronJob(@ModelAttribute("cronjb") CronJobs cronjb){
 		
-		    System.out.println("Minute: " + cronjb.getMinute());
-		    System.out.println("Hour: " + cronjb.getHour());
-		    System.out.println("Day: " + cronjb.getDay());
-		    System.out.println("Month: " + cronjb.getMonth());
-		    System.out.println("DOW: " + cronjb.getDow());		    
-		    
-		    ModelAndView model = new ModelAndView("displayjobs");	    
+		JobExecutorService js = new JobExecutorService();
+		String str = js.scheduleJoboncluster(cronjb);
+		    ModelAndView model = new ModelAndView("success");	    
 		    return model; 
 		    
 	}

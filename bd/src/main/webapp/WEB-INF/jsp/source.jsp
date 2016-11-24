@@ -32,9 +32,9 @@
      <script type="text/javascript">
      
      function  executeFlow() {
-    	 var source = document.getElementById("source").value;
+    	/*  var source = document.getElementById("source").value;
     	 var env = document.getElementById("env").value;
-    	 var operation = document.getElementById("operation").value;
+    	 var jobtype = document.getElementById("jobtype").value; */
     	    	 if (validation()) // Calling validation function
     	    	 {
     	    	 var x = document.getElementsByName('executorform');
@@ -52,9 +52,14 @@
      function validation() {
     	 var source = document.getElementById("source").value;
     	 var env = document.getElementById("env").value;
-    	 var operation = document.getElementById("operation").value;
-    	 
-    	if (source === 'none' || env === 'none' || operation === 'none') {
+    	 var jobtype = document.getElementById("jobtype").value;
+    	 var minute = document.getElementById("minute").value; 
+    	 var day = document.getElementById("day").value; 
+    	 var hour = document.getElementById("hour").value; 
+    	 var month = document.getElementById("month").value; 
+    	 var dow = document.getElementById("dow").value; 
+    	
+    	if (source === 'none' || env === 'none' || jobtype === 'none' || minute==="" || day===""||hour===""||month===""||dow==="") {
     	alert("Please select all fields...!!!!!!");
     	return false;
     	}else {
@@ -128,7 +133,7 @@
     <section>
         <div class="container">
 
-   <form action="displayjobs.html" method="post" commandName="cronjb">     
+   <form action="displayjobs.html" method="post" id="executorform"  name="executorform" commandName="cronjb">     
 <!--  -->
          <div class="col-md-12">
                     <div  id="contact-form" >
@@ -168,7 +173,7 @@
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="Operation">Operation</label>
-                                <select id="operation" name="operation" class="form-control">
+                                <select id="jobtype" name="jobtype" class="form-control">
 											<option value="none">select a value</option>
 											<option value="ingestion">INGESTION</option>
 											<option value="hiveloader">HIVELOADER</option>
@@ -183,7 +188,7 @@
 							 <div class="col-md-6 form-group ">
                                <label for="Minute">Minute:</label>
                           
-                               <input class="form-control" type="text" name="minute" " placeholder="Minut(0-59)">
+                               <input class="form-control" type="text" name="minute" id="minute"  placeholder="Minut(0-59)">
                            
                             </div>
                             
@@ -191,25 +196,25 @@
                              <div class="col-md-6 form-group">
                                <label for="Hour" >Hour:</label>
                       
-                               <input class="form-control" type="text" name="hour"  placeholder="Hour(0-23)">
+                               <input class="form-control" type="text" name="hour" id="hour"  placeholder="Hour(0-23)">
                              
                             </div>
                             <div class="col-md-6 form-group">
                                <label for="Day" >Day:</label>
                           
-                               <input class="form-control" type="text" name="day" placeholder="Day(1-31)">
+                               <input class="form-control" type="text" name="day" id="day" placeholder="Day(1-31)">
                           
                             </div>
                             <div class="col-md-6 form-group">
                                <label for="Month" >Month:</label>
                          
-                               <input class="form-control" type="text" name="month" placeholder="Month(1-12)">
+                               <input class="form-control" type="text" name="month" id="month" placeholder="Month(1-12)">
                             
                             </div>
                             <div class="col-md-6 form-group">
                                <label for="Day-of-week" >Day-of-week:</label>
                            
-                               <input class="form-control" type="text" name="dow" placeholder="DOW(0-7)">
+                               <input class="form-control" type="text" name="dow" id="dow" placeholder="DOW(0-7)">
                              
                             </div>
                             	
@@ -224,7 +229,7 @@
                            
                            
                                
-                        <input type="submit" style="height: 40px;margin-bottom: 50px;margin-left: 5.33%;width: 126px;" class="col-md-offset-4 col-md-4 btn btn-primary" value="Schedule Job" />
+                        <input type="button" style="height: 40px;margin-bottom: 50px;margin-left: 5.33%;width: 126px;" class="col-md-offset-4 col-md-4 btn btn-primary" value="Schedule Job" onclick="executeFlow()" />
 						
 						<input type="button" style="height: 40px;margin-bottom: 50px;margin-left: 5.33%;width: 126px;" class="col-md-offset-4 col-md-4 btn btn-primary" value="Reset" onclick="reset()"/>
 						
