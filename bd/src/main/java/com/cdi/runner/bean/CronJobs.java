@@ -4,7 +4,7 @@ import com.cdi.runner.form.JobForm;
 
 public class CronJobs extends JobForm {
 	
-	private String minute;
+	private String minute;    
 	private String hour;
 	private String day;
 	private String month;
