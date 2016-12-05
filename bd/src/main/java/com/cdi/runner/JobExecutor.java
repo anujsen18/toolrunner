@@ -19,18 +19,30 @@ import com.jcraft.jsch.Channel;
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
-import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
 
 public class JobExecutor {
+ Session session;
+
+	
+	
+	public JobExecutor(Session createConnection) {
+	this.session=createConnection;
+}
+
+
+	public void destroySession() {
+	this.session.disconnect();
+	this.session=null;
+}
 
 	/**
 	 * JSch Example Tutorial
 	 * Java SSH Connection Program
 	 */
 	
-	public Session createConnection(){
+	/*public Session createConnection(){
 		   String host="10.223.3.143";
 		    String user="cts1";
 		    String password="Password123";	
@@ -52,11 +64,11 @@ public class JobExecutor {
 	    	
 	    	System.out.println("Connected");
 			return session;
-	}
+	}*/
 	
 	
 	public  String commandexecutor(String command){
-		  Session session = this.createConnection();
+		  /*Session session = this.createConnection();*/
 		  String command1=command;
 		  StringBuilder sb = new StringBuilder();
 		   
@@ -64,10 +76,11 @@ public class JobExecutor {
 				Channel channel;
 				try {
 					channel = session.openChannel("exec");
+				
 					((ChannelExec) channel).setCommand(command1);
 					channel.setInputStream(null);
 					((ChannelExec) channel).setErrStream(System.err);
-
+				
 					InputStream in = channel.getInputStream();
 					channel.connect();
 					byte[] tmp = new byte[1024];
@@ -89,7 +102,7 @@ public class JobExecutor {
 						}
 					}
 					channel.disconnect();
-					session.disconnect();
+				//	session.disconnect();
 					System.out.println("DONE");
 				} catch (Exception e) {
 					System.out.println("error in executing");
@@ -104,7 +117,7 @@ public class JobExecutor {
 	
 	
 	public  String  executeJob(JobForm jf){
-	   Session session = this.createConnection();
+	  /* Session session = this.createConnection();*/
 	   //System.out.println("cd /ingestion/prod/apps/bulk_ingestion;bash /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e="+jf.getEnv()+" -s=cdr_source -t=ingestion");
 	   String command1="cd /ingestion/prod/apps/bulk_ingestion;bash /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e="+jf.getEnv()+" -s=cdr_source -t=ingestion"; 
 	 return commandexecutor(command1);
@@ -112,24 +125,25 @@ public class JobExecutor {
 	
 	
 	 public void WriteFileServer(String str_Content, String str_FileDirectory, String str_FileName)
-	  {
+	  {System.out.println("writing file "+ str_FileDirectory+str_FileName);
 		 try
 		 {
-		   Session  obj_Session = this.createConnection();
+		 /*  Session  obj_Session = this.createConnection();*/
 		   Properties obj_Properties = new Properties();
 		   obj_Properties.put("StrictHostKeyChecking", "no");
-		   obj_Session.setConfig(obj_Properties);
+		   session.setConfig(obj_Properties);
 
-		   Channel obj_Channel = obj_Session.openChannel("sftp");
+		   Channel obj_Channel = session.openChannel("sftp");
 		   obj_Channel.connect();
 		   ChannelSftp obj_SFTPChannel = (ChannelSftp) obj_Channel;
 		   obj_SFTPChannel.cd(str_FileDirectory);
 		   InputStream obj_InputStream = new ByteArrayInputStream(str_Content.getBytes());
+		   
 		   obj_SFTPChannel.put(obj_InputStream, str_FileDirectory + str_FileName );
 		   obj_SFTPChannel.exit();
 		   obj_InputStream.close();
 		   obj_Channel.disconnect();
-		   obj_Session.disconnect();
+		  // session.disconnect();
 		 }
 		 catch (Exception ex)
 		 {System.out.println("exception in writing");
@@ -186,7 +200,8 @@ public class JobExecutor {
 
 
 	public void createDirforsource(String source) {
-		commandexecutor("mkdir -p "+ source);
+		commandexecutor(" test -d \""+source+"\" && echo dirExist || mkdir -p"+ source	);
+		// test -d "/home/cts1/anuj/pder" && echo Exists || echo Does not exist
 		System.out.println("creating dir  "+ "mkdir -p "+ source);
 	}
 
@@ -227,4 +242,14 @@ public class JobExecutor {
 		funalresult.add(  new ArrayList<String>(Arrays.asList(prop.getProperty("env", "").split(",")))); 
 		  return funalresult;
 	}
+
+
+	public boolean isExist(String confpath, String getfileNameformsoruce) {
+		 String  str =commandexecutor(" test -f "+confpath+getfileNameformsoruce+ " && echo yes || echo no");
+		
+		 return (str.equalsIgnoreCase("yes"));
+	}
+
+
+	
 }

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cdi.runner.form.ClusterForm;
@@ -43,6 +44,8 @@ public class JobExecutorController {
 		ModelAndView view = new ModelAndView("home");
 		try {
 			view.addObject("clusterlist", js.ReadForMeta());
+			view.addObject("envrlist", js.getEnv());
+			view.addObject("sourcelist", js.getSource());
 		} catch (IOException e) {
 			System.out.println("Error while reading data");
 			e.printStackTrace();
@@ -125,13 +128,19 @@ public class JobExecutorController {
 	
 	
 	@RequestMapping(value ="/savesource", method = RequestMethod.POST)
-    public ModelAndView processRegistration(@ModelAttribute("sourceForm") SourceForm sourceForm,
-            Map<String, Object> model) {
+    public ModelAndView processRegistration(@ModelAttribute("sourceForm") SourceForm sourceForm,/*
+    @RequestParam("transcript")  MultipartFile transcript, @RequestParam("stagscript")  MultipartFile stagscript,*/
+    Map<String, Object> model) {
 		System.out.println("saving resource");
-		
+		System.out.println(sourceForm.getStagscript().toString());
 		JobExecutorService js = new JobExecutorService();
 		try {
-			js.writeFileToServer(sourceForm);
+			try {
+				js.writeFileToServer(sourceForm);
+			} catch (IOException e) {
+				System.out.println("Error in creating file ");
+				e.printStackTrace();
+			}
 		} catch (IllegalAccessException e) {
 			System.out.println("Error in creating file ");
 			e.printStackTrace();
@@ -196,7 +205,7 @@ public class JobExecutorController {
 		String[] str;
 		ArrayList<ScheduledJobForm> listscjf ;
 		JobExecutorService js = new JobExecutorService();
-		listscjf= (ArrayList<ScheduledJobForm>) js.getListOfSchedledJob();
+		listscjf= (ArrayList<ScheduledJobForm>) js.getListOfSchedledJob();	
 		System.out.println("at controller ");
 	//	System.out.println(str);
 		ModelAndView view = new ModelAndView("cronlist");

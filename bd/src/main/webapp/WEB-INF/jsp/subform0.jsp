@@ -1,11 +1,6 @@
 <legend>ingestion  Details::</legend>
 		                      
-		                       <div class="col-md-12 form-group">
-		                               <!--  <label for="name">Source Name</label> -->
-		                  
-		                                <input type="hidden" name="sourcename" class="form-control" id="sourcename" placeholder="Source Name" value=${sourcename} />
-		                        
-		                            </div>
+		                      
 		                            
 		                           
 		                        
@@ -84,7 +79,8 @@
 								</div>
 		
 								<div class="col-md-6 form-group">
-									<label for="output_compression">Output compression</label> <select
+									<label for="output_compression">Output compression</label> 
+									<select
 										id="output_compression" name="output_compression"
 										class="form-control">
 										<option value="none">select a value</option>

@@ -42,24 +42,31 @@
     	
        <c:set var="sourcename" value="${jobType.sourcename}"/>
     <script type="text/javascript">
+ // code to disable back    
+    history.pushState({ page: 1 }, "Title 1", "#no-back");
+    window.onhashchange = function (event) {
+      window.location.hash = "no-back";
+    };
+    
     
     var listvar = [ ${fileIngestion},${importfromDatabase},${rawAreaArchival},${bulkfileProcessing},${hDFSRetention},${hIVECompaction},${exportToFtpServer},${exportToDatabase},${bulkFileprocessing}, ${dataDeDuplication},${automatedDeployment}];
     
        $(document).ready(function(){
-    	   
+    	var str="";   
     	 
     	   
     	   $.each(listvar, function( index, value ) {
-    		 
+    		 //  alert(value);
     		   if(value==true){
-    			  
-    			   $('#divvv'+index).show(); 
+    			   str=str+index+'#'; 
+    			   $('#subdiv'+index).show(); 
     		   }else{
-    			   $('#divvv'+index).hide(); 
+    			   $('#subdiv'+index).hide(); 
     		   }
     	   });
     		  
-    		 });
+    	   $('#listattr').val(str);
+       });
     	   
     	   
     	 
@@ -73,46 +80,6 @@
    <!-- HEADER SECTION-->
    <%@ include file="header.jsp" %>
 
-
-
-
-  <%-- <section id="Homepage">
-        <div class="container">
-            <div class="row">
-                <div data-scrollreveal="wait 0.5s and then ease-in-out 50px" class="col-md-6 col-md-offset-3">
-
-                    <div class="align-center">
-                      <!--   <h2 class="main-text">WELCOME TO COMMON INGESTION RUNNER</h2> -->
-
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div data-scrollreveal="enter from the left 500px" class="col-md-6 col-md-offset-3">
-
-                    <div class="align-center">
-                        <div class="col-md-12 align-center">
-                            <div class="hi-icon-effect-9 hi-icon-effect-9a">
-
-							<form:form method="get" action="hello.html">
-								<h2 class="main-text">${jobType.importfromDatabase}</h2>
-								
-								
-								<br>
-								
-								
-								   <a href="./hello.html" class="hi-icon hi-icon-contract"></a>
-						    	</form:form>
-						   </div>
-                            <br />
-                          
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section> --%>
-     <!--END HOMEPAGE SECTION-->
 
 <section id="section-contact" class="section">
         <div class="container" data-scrollreveal="enter left and move 40px over 0.8s">
@@ -135,13 +102,24 @@
                 
                     <div  id="contact-form" ><%-- commandName="sourceForm" --%>  
                     
-     <form:form method="post" action="savesource" commandName="sourceForm">
+     <form:form method="post" action="savesource" commandName="sourceForm" enctype="multipart/form-data">
      
 	 
 	<fieldset class="col-md-12 form-group" id="form0" style="margin-top: 50px;">
-	
+	 <div class="col-md-12 form-group">
+		                               <!--  <label for="name">Source Name</label> -->
+		                  
+		                                <input type="hidden" name="sourcename" class="form-control" id="sourcename"  value=${sourcename} />
+		                                  <input type="hidden" name="listattr" class="form-control" id="listattr"  value="" />
+		                            </div>
 	<div id="subdiv0">
 	  <%@ include file="subform0.jsp" %>
+	</div>
+	<div id="subdiv2">
+	  <%@ include file="subform2.jsp" %>
+	</div>
+	<div id="subdiv3">
+	  <%@ include file="subform3.jsp" %>
 	</div>
 	<%-- <div id="subdiv1">
 	  <%@ include file="subform1.jsp" %>
@@ -363,16 +341,16 @@
 								
 		</fieldset>	 -->		
 						
-		<fieldset class="col-md-12 form-group" id="form0" >
+		<%-- <fieldset class="col-md-12 form-group" id="form0" >
  			<legend>Db import:</legend>
-					<%-- <form:form method="post" name="" action="somepage" commandName="somedata"  > --%>
+					<form:form method="post" name="" action="somepage" commandName="somedata"  >
                     
 						<div class="col-md-6 form-group">
 							<label for="Stage loder script">Stage loder script</label> <input type="text"
 								name="Stage_loder_script" class="form-control"
 								id="Stage_loder_script"
 								placeholder="Stage loder script" defalt=""/>
-						</div>
+						</div> --%>
 					
 					<!-- 	<div class="col-md-6 form-group">
 							<label for="Transform loder script">Stage loder script</label> <input type="text"

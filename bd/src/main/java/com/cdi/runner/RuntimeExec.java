@@ -12,129 +12,123 @@ import com.cdi.runner.form.ScheduledJobForm;
 import com.cdi.runner.form.SourceForm;
 import com.cdi.runner.util.FeildValConverter;
 import com.jcraft.jsch.Channel;
+import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.ChannelSftp;
 import com.jcraft.jsch.JSch;
+import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.jcraft.jsch.SftpATTRS;
+import com.jcraft.jsch.SftpException;
 
 public class RuntimeExec {
-public StreamWrapper getStreamWrapper(InputStream is, String type){
-            return new StreamWrapper(is, type);
-}
-private class StreamWrapper extends Thread {
-    InputStream is = null;
-    String type = null;          
-    String message = null;
-
-    public String getMessage() {
-            return message;
-    }
-
-    StreamWrapper(InputStream is, String type) {
-        this.is = is;
-        this.type = type;
-    }
-
-    public void run() {
-        try {
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-            StringBuffer buffer = new StringBuffer();
-            String line = null;
-            while ( (line = br.readLine()) != null) {
-                buffer.append(line);//.append("\n");
-            }
-            message = buffer.toString();
-        } catch (IOException ioe) {
-            ioe.printStackTrace();  
-        }
-    }
-}
- 
-
-// this is where the action is
-public static void main(String []args) {
-          /*  Runtime rt = Runtime.getRuntime();
-            RuntimeExec rte = new RuntimeExec();
-            StreamWrapper error, output;
-
-            try {
-                        Process proc = rt.exec("bash /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e=prod -s=cdr_source -t=ingestion");
-                        error = rte.getStreamWrapper(proc.getErrorStream(), "ERROR");
-                        output = rte.getStreamWrapper(proc.getInputStream(), "OUTPUT");
-                        int exitVal = 0;
-
-                        error.start();
-                        output.start();
-                        error.join(3000);
-                        output.join(3000);
-                        exitVal = proc.waitFor();
-                        System.out.println("Output: "+output.message+"\nError: "+error.message);
-            } catch (IOException e) {
-                        e.printStackTrace();
-            } catch (InterruptedException e) {
-                        e.printStackTrace();
-            }
-            }*/
+	public  static Session createConnection(){
+		   String host="10.223.3.143";
+		    String user="cts1";
+		    String password="Password123";	
+			java.util.Properties config = new java.util.Properties(); 
+	    	config.put("StrictHostKeyChecking", "no");
+	    	JSch jsch = new JSch();
+	    	Session session=null;
+			try {
+				
+				session = jsch.getSession(user, host, 22);
+				session.setPassword(password);
+		    	session.setConfig(config);
+		    	session.connect();
+		    	return session;
+			} catch (JSchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	
+	    	System.out.println("Connected");
+			return session;
+	}
 	
-/*SourceForm sf = new SourceForm();
-sf.setSourcename("test1");
-sf.setValidate_header_footer_flag("true");
-sf.setStage_script("testscrpu");
-try {
-Map<String,String> strval=	FeildValConverter.getJobSpecKeyValMap(sf, SourceForm.class);
+	public static   String commandexecutor(String command){
+		  Session session = createConnection();
+		  
+		  StringBuilder sb = new StringBuilder();
+		   
+			if (session != null) {
+				Channel channel;
+				try {
+					channel = session.openChannel("exec");
+				
+					((ChannelExec) channel).setCommand(command);
+					channel.setInputStream(null);
+					((ChannelExec) channel).setErrStream(System.err);
+				
+					InputStream in = channel.getInputStream();
+					channel.connect();
+					byte[] tmp = new byte[1024];
+					while (true) {
+						while (in.available() > 0) {
+							int i = in.read(tmp, 0, 1024);
+							if (i < 0)
+								break;
+							sb.append(new String(tmp, 0, i));
+							System.out.print(new String(tmp, 0, i));
+						}
+						if (channel.isClosed()) {
+							System.out.println("exit-status: " + channel.getExitStatus());
+							break;
+						}
+						try {
+							Thread.sleep(1000);
+						} catch (Exception ee) {
+						}
+					}
+					channel.disconnect();
+					session.disconnect();
+					System.out.println("DONE");
+				} catch (Exception e) {
+					System.out.println("error in executing");
+					e.printStackTrace();
+				}
 
+			}
+			System.out.println(sb.toString());
+			return sb.toString();
+	}
+	
+	
+	public static void main(String[] args) throws JSchException, SftpException {
+		
+	//	WriteFileServer("","","");
+		
+		String str = "12345678";
+		int strt=0;
+		int end = str.length()-1;
+		char[] strchr=str.toCharArray();
+		while(strt<end){
+			char st =strchr[strt];
+			strchr[strt]=strchr[end];
+			strchr[end]=st;
+			strt++;
+			end--;
+			
+		}
+		
+		System.out.println(strchr);
+	}
+	
+	 public static void WriteFileServer(String str_Content, String str_FileDirectory, String str_FileName) throws JSchException, SftpException
+	  {	  Session session = createConnection();
+	 // Channel  channel;
+	  Channel channel = session.openChannel("sftp");
+	//	 String currentDirectory=channelSftp.pwd();
+	//	 String dir="anuj";
+	 ChannelSftp channelSftp = (ChannelSftp)channel;
+		// SftpATTRS attrs=null;
+		 try {
+		  //   attrs = channelSftp.stat("/ingestion/test/apps/bulk_ingestion/conf/vdr_source");
+		     SftpATTRS attrs = channelSftp.lstat("/anuj");
+		 } catch (Exception e) {
+		     System.out.println(" not found");
+		 }
 
-for (Entry<String,String> str : strval.entrySet()) {
-	System.out.println(str.getKey() +": "+str.getValue());
-}
-
-JobExecutor re= new JobExecutor();
-//re.WriteFileServer(strval, "/home/cts1/anuj/test/", "testfinale22");
-System.out.println("compltet");
-} catch (IllegalAccessException e) {
-	// TODO Auto-generated catch block
-	e.printStackTrace();
-}*/
-String str = "3 * * * * /ingestion/prod/apps/bulk_ingestion/ingestion_runner.sh  -e=prod -s=cdr_source -t=help";
-str= str.replaceAll("\\s+", " ");
-String [] split= str.split(" ");
-ScheduledJobForm sf= new ScheduledJobForm(str);
-	for(String stre:split )
-		System.out.println(sf);
-}
-/*
-JSch obj_JSch = new JSch();
-Session obj_Session = null;
-String str_Host = "10.223.3.143";
-String str_Username="cts1";
-String str_Password= "Password123";
-int int_Port =22;
-String str_Content ="asd=1213\neee=3433";
-String str_FileDirectory="/home/cts1/anuj/test/";
-String str_FileName="testabccc";
-try
-{
-  obj_Session = obj_JSch.getSession(str_Username, str_Host);
-  obj_Session.setPort(int_Port);
-  obj_Session.setPassword(str_Password);
-  Properties obj_Properties = new Properties();
-  obj_Properties.put("StrictHostKeyChecking", "no");
-  obj_Session.setConfig(obj_Properties);
-  obj_Session.connect();
-  Channel obj_Channel = obj_Session.openChannel("sftp");
-  obj_Channel.connect();
-  ChannelSftp obj_SFTPChannel = (ChannelSftp) obj_Channel;
-  obj_SFTPChannel.cd(str_FileDirectory);
-  InputStream obj_InputStream = new ByteArrayInputStream(str_Content.getBytes());
-  obj_SFTPChannel.put(obj_InputStream, str_FileDirectory + str_FileName );
-  obj_SFTPChannel.exit();
-  obj_InputStream.close();
-  obj_Channel.disconnect();
-  obj_Session.disconnect();
-}
-catch (Exception ex)
-{
-  ex.printStackTrace();
-}
-}*/
-
+		
+	  }	
+	
 }

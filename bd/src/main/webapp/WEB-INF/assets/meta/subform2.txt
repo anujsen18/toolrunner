@@ -1,0 +1,21 @@
+inputRootDir,Dir ,text,
+inputGlobPattern,Pattern,text,
+inputFileNameFilterRegex,Regex ,text,
+inputDataType,DataType ,select,text # sequence
+inputCharacterSet,Character Set ,text,
+inputDirClosedFlag,Input Dir closed Flag,text,
+inputDirClosedFlagFile,File extention for closed file ,text,
+inputSplitSizeBytes,Bytes for Archive,text,
+oozieLauncherJobHeapSizeMb,Mb for Archive,text,
+sequenceFileMapperHeapMb,Mb for Archive,text,
+outputArchiveRootDir,Dir for Archive,text,
+outputStorageFormat,Format for Archive,select,text #sequence
+outputStorageCompression,Compression for Archive,radio,true # false
+outputStorageCompressionType,Type for Archive,select,BLOCK#RECORD
+outputStorageCompressionCodec,Codec for Archive,select,Gzip
+archiveThresholdType,Type for Archive,text,
+archiveThresholdValue,Value for Archive,text,
+minFilesToArchive,min Files ToArchive,text,
+maxFilesToArchive,max Files ToArchive,text,
+maxDirsToArchive,max Dirs ToArchive,text,
+archive_retention_in_days,retention_in_days for Archive,text,
