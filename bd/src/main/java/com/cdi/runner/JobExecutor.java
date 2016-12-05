@@ -80,7 +80,7 @@ public class JobExecutor {
 					((ChannelExec) channel).setCommand(command1);
 					channel.setInputStream(null);
 					((ChannelExec) channel).setErrStream(System.err);
-				
+		 		
 					InputStream in = channel.getInputStream();
 					channel.connect();
 					byte[] tmp = new byte[1024];
