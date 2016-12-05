@@ -153,7 +153,7 @@ public List  getListOfSchedledJob() {
 	}
 	jb.destroySession();
 	return listscjf;
-}
+} 
 
 
 public List  getStatusOfSchedledJob() {
